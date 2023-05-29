@@ -2,6 +2,7 @@ import { UserDatabase } from "../database/UserDatabase"
 import { Request, Response } from "express"
 import { TUser } from "../types"
 import { User } from "../models/User"
+import { UserBusiness } from "../business/UserBusiness"
 
 
 export class UserController {
@@ -9,9 +10,11 @@ export class UserController {
 
     public findUsers =  async (req: Request, res: Response) => {
         try {
+
+            const userBusiness = new UserBusiness()
+            const result = await userBusiness.findUsers()
       
-          const user_database = new UserDatabase()
-          const result = await user_database.findUsers()
+          
       
           res.status(200).send(result)
         } catch (error) {
