@@ -14,8 +14,6 @@ export class UserController {
             const userBusiness = new UserBusiness()
             const result = await userBusiness.findUsers()
       
-          
-      
           res.status(200).send(result)
         } catch (error) {
           console.log(error)
@@ -32,26 +30,38 @@ export class UserController {
         }
       }
 
+      public findUserById = async (req: Request, res: Response) => {
+        try {
+            const id:string = req.params.id;
+
+            const userBusiness = new UserBusiness()
+            const result = await userBusiness.findUserById(id)
+
+            res.status(200).send(result)
+        } catch (error) {
+            console.log(error)
+      
+            if (req.statusCode === 200) {
+                res.status(500)
+            }
+        
+            if (error instanceof Error) {
+                res.send(error.message)
+            } else {
+                res.send("Erro inesperado")
+            }
+        }
+      }
+
+
+
     public createUser = async (req: Request, res: Response) => {
         try {
             const { id, name, age} = req.body
 
-            const userDatabase = new UserDatabase()
+            const userBusiness = new UserBusiness()
+            const result = userBusiness.createUser(id, name, age)
 
-            const newUser = new User(
-                id,
-                name,
-                age
-            );
-            
-
-            const newUserTUser: TUser = {
-                id: newUser.getId(),
-                name: newUser.getName(),
-                age: newUser.getAge()
-            }
-
-            await userDatabase.insertUser(newUserTUser)
 
             res.status(200).send("Usuário criado com sucesso")
         } catch (error) {

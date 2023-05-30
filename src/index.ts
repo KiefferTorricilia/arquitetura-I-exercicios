@@ -21,6 +21,8 @@ const userController = new UserController()
 
 app.get("/users",userController.findUsers)
 
+app.get("/users/:id", userController.findUserById)
+
 app.post("/users", userController.createUser)
 
 app.put("/users/:id", userController.updateUser)
